@@ -50,7 +50,7 @@ app.use('*', async (c, next) => {
 app.use(
   '/api/auth/*',
   cors({
-    origin: 'http://localhost:5173', // TODO: replace with your frontend origin
+    origin: 'http://localhost:5173', // TODO: replace with actual frontend url
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],
@@ -58,6 +58,10 @@ app.use(
     credentials: true,
   })
 );
+
+// --------------------------------------------------
+// Middleware TODO: ip based rate limiting
+// --------------------------------------------------
 
 // --------------------------------------------------
 // Routes
