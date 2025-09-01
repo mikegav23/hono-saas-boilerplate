@@ -1,26 +1,29 @@
-import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import { auth } from "./auth.js";
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { auth } from './auth.js';
+import users from './routes/users.route.js';
 
 const app = new Hono();
 
+// Middleware
 app.use(
-  "/api/auth/*", // or replace with "*" to enable cors for all routes
+  '/api/auth/*', // or replace with "*" to enable cors for all routes
   cors({
-    origin: "http://localhost:5173", // replace with your origin
-    allowHeaders: ["Content-Type", "Authorization"],
-    allowMethods: ["POST", "GET", "OPTIONS"],
-    exposeHeaders: ["Content-Length"],
+    origin: 'http://localhost:5173', // replace with your origin
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
     maxAge: 600,
     credentials: true,
   })
 );
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
-
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
+// Routes
+app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw)); // Auth route
+app.route('/users', users);
+app.get('/', (c) => {
+  return c.text('Hello Hono!');
 });
 
 serve(
