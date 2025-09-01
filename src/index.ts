@@ -73,6 +73,19 @@ app.on(['POST', 'GET'], '/api/auth/**', (c) => auth.handler(c.req.raw));
 // Routes registered from /routes files
 app.route('/users', users);
 
+// Example route for auth context testing
+app.get('/me', (c) => {
+  const session = c.get('session');
+  const user = c.get('user');
+
+  if (!user) return c.body(null, 401);
+
+  return c.json({
+    session,
+    user,
+  });
+});
+
 // Example route for testing
 app.get('/', (c) => {
   return c.text('Hello Hono!');
